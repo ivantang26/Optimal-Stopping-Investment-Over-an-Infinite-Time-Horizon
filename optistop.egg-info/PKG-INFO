@@ -1,0 +1,61 @@
+Metadata-Version: 2.4
+Name: optistop
+Version: 1.0.0
+Summary: Python engine for infinite-horizon optimal stopping with non-smooth utility
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: numpy>=1.24
+Requires-Dist: scipy>=1.10
+Requires-Dist: pandas>=2.0
+Provides-Extra: viz
+Requires-Dist: matplotlib>=3.7; extra == "viz"
+Requires-Dist: plotly>=5.20; extra == "viz"
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0; extra == "dev"
+Requires-Dist: hypothesis>=6.98; extra == "dev"
+Requires-Dist: numba>=0.59; extra == "dev"
+
+# OptiStop
+
+Institutional-style Python engine for infinite-horizon optimal stopping with non-smooth utility and free-boundary methods.
+
+## What is implemented
+
+- `optistop.core`: abstract interfaces and solver result container.
+- `optistop.processes`: `GBM`, `OrnsteinUhlenbeck`, `JumpDiffusion`.
+- `optistop.payoffs`: `VanillaCall`, `PowerUtility`, `KinkedUtility`, convex conjugate helper.
+- `optistop.solvers`: finite-difference operator, PSOR obstacle solver, dual transformation solver, analytical McDonald-Siegel benchmark.
+- `optistop.analytics`: trigger/Greeks/DataFrame export utilities.
+- `optistop.viz`: value/payoff plot, path-overlay plot, trigger sensitivity heatmap.
+
+## Install
+
+```bash
+pip install -e .[viz,dev]
+```
+
+## Run demo
+
+```bash
+python examples/run_optistop_demo.py
+```
+
+Artifacts are generated under `output/optistop/`:
+
+- `value_vs_payoff.png`
+- `kinked_value_vs_payoff.png`
+- `path_overlay.png`
+- `boundary_heatmap.html`
+- `value_table.csv`
+
+## Run tests
+
+```bash
+pytest -q
+```
+
+## Notes
+
+- Infinite-horizon setup enforces `r > 0`.
+- Sparse matrices (`scipy.sparse`) are used in the PDE operator.
+- PSOR uses `numba` acceleration when available.
